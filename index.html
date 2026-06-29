@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nooka Raju & Satyavathi - 27 Years of Love</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&family=Noto+Serif+Telugu:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gold: #d4a017;
+            --gold-light: #f5d06a;
+            --gold-pale: #fdf3d0;
+            --space: #03010f;
+            --space-mid: rgba(5, 2, 20, 0.84);
+            --space-deep: rgba(8, 3, 28, 0.92);
+            --purple: #7c3aed;
+            --purple-light: #a78bfa;
+            --cream: #fff8ec;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--space);
+            color: var(--cream);
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        /* ── STARFIELD CANVAS ── */
+        #starfield {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* All content sits above canvas */
+        .hero, section, footer { position: relative; z-index: 1; }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero video {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(3,1,15,0.2) 0%,
+                rgba(3,1,15,0.45) 50%,
+                rgba(3,1,15,0.95) 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            animation: fadeInUp 1.8s ease forwards;
+        }
+
+        .telugu-label {
+            font-family: 'Noto Serif Telugu', serif;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--gold-light);
+            letter-spacing: 0.08em;
+            margin-bottom: 1.2rem;
+            opacity: 0.85;
+        }
+
+        .names {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 8vw, 6rem);
+            color: var(--gold-light);
+            font-weight: 400;
+            line-height: 1.1;
+            text-shadow:
+                0 0 60px rgba(212,160,23,0.45),
+                0 0 120px rgba(124,58,237,0.2);
+        }
+
+        .ampersand {
+            font-style: italic;
+            color: var(--gold);
+            font-size: 0.72em;
+            display: block;
+            margin: 0.1em 0;
+        }
+
+        .divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+            margin: 2rem auto;
+        }
+
+        .divider-purple {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--purple-light), transparent);
+            margin: 2rem auto;
+        }
+
+        .years-badge {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--gold-pale);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+        }
+
+        .date-text {
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            color: var(--gold);
+            letter-spacing: 0.2em;
+            margin-top: 0.6rem;
+            opacity: 0.75;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2.5rem; left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            opacity: 0.45;
+            animation: bounce 2.5s infinite;
+        }
+
+        .scroll-hint span {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--purple-light);
+        }
+
+        .scroll-hint .arrow {
+            width: 16px; height: 16px;
+            border-right: 1px solid var(--purple-light);
+            border-bottom: 1px solid var(--purple-light);
+            transform: rotate(45deg);
+        }
+
+        /* ── SHARED SECTION STYLES ── */
+        .section-telugu {
+            font-family: 'Noto Serif Telugu', serif;
+            font-size: 1rem;
+            color: var(--purple-light);
+            opacity: 0.75;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 4vw, 2.6rem);
+            color: var(--gold-light);
+            font-weight: 400;
+        }
+
+        /* ── POETRY SECTION ── */
+        .poetry-section {
+            padding: 8rem 2rem;
+            text-align: center;
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        .poetry-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            color: var(--purple-light);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+
+        .poetry-subtitle {
+            font-family: 'Noto Serif Telugu', serif;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: var(--gold);
+            opacity: 0.7;
+            margin-bottom: 3rem;
+        }
+
+        .poem {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+            line-height: 2;
+            color: var(--cream);
+            font-style: italic;
+            opacity: 0.92;
+            text-shadow: 0 0 40px rgba(167,139,250,0.25);
+        }
+
+        .poem .stanza { margin-bottom: 2rem; }
+
+        .poem .stanza:last-child {
+            color: var(--gold-light);
+            text-shadow: 0 0 40px rgba(212,160,23,0.35);
+            font-size: 1.1em;
+        }
+
+        /* ── COUNTER ── */
+        .counter-section {
+            background: var(--space-mid);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            padding: 5rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(167,139,250,0.2);
+            border-bottom: 1px solid rgba(167,139,250,0.15);
+        }
+
+        .counter-grid {
+            display: flex;
+            justify-content: center;
+            gap: clamp(2rem, 6vw, 5rem);
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+        }
+
+        .counter-item { display: flex; flex-direction: column; align-items: center; }
+
+        .counter-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 9vw, 6rem);
+            color: var(--gold);
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(212,160,23,0.4);
+        }
+
+        .counter-label {
+            font-size: 0.78rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--purple-light);
+            opacity: 0.7;
+            margin-top: 0.5rem;
+        }
+
+        /* ── MESSAGE ── */
+        .message-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 7rem 2rem;
+            text-align: center;
+        }
+
+        .ornament {
+            font-size: 1.4rem;
+            color: var(--purple-light);
+            opacity: 0.4;
+            letter-spacing: 0.5em;
+            display: block;
+            margin-bottom: 2.5rem;
+        }
+
+        .message-body {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+            line-height: 2;
+            color: var(--cream);
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        .message-telugu {
+            font-family: 'Noto Serif Telugu', serif;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            line-height: 2.2;
+            color: var(--gold-pale);
+            margin-top: 2.5rem;
+            opacity: 0.85;
+        }
+
+        .signature {
+            margin-top: 3.5rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+        }
+
+        .signature p { font-size: 1rem; opacity: 0.7; margin-bottom: 0.3rem; }
+        .sig-names { font-size: 1.5rem; font-style: italic; opacity: 1 !important; }
+
+        /* ── SEA VIDEO ── */
+        .sea-section {
+            padding: 5rem 2rem;
+            background: var(--space-deep);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-top: 1px solid rgba(167,139,250,0.18);
+        }
+
+        .sea-video-wrap {
+            max-width: 860px;
+            margin: 0 auto;
+            border: 1px solid rgba(212,160,23,0.25);
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(124,58,237,0.15);
+        }
+
+        .sea-video-wrap video { width: 100%; display: block; }
+
+        /* ── GALLERY ── */
+        .gallery-section {
+            padding: 5rem 2rem 6rem;
+            background: var(--space-mid);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-top: 1px solid rgba(167,139,250,0.15);
+        }
+
+        .gallery-header { text-align: center; margin-bottom: 3rem; }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            border: 1px solid rgba(167,139,250,0.2);
+            box-shadow: 0 0 20px rgba(124,58,237,0.08);
+        }
+
+        .photo-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: transform 0.7s ease;
+            filter: sepia(8%) saturate(108%) brightness(92%);
+        }
+
+        .photo-item:hover img { transform: scale(1.05); }
+
+        .photo-item::after {
+            content: '';
+            position: absolute; inset: 0;
+            border: 1px solid transparent;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            pointer-events: none;
+        }
+
+        .photo-item:hover::after {
+            border-color: rgba(167,139,250,0.4);
+            box-shadow: inset 0 0 20px rgba(124,58,237,0.1);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 5rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(167,139,250,0.15);
+        }
+
+        .footer-telugu {
+            font-family: 'Noto Serif Telugu', serif;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            color: var(--gold-light);
+            margin-bottom: 0.3rem;
+            text-shadow: 0 0 30px rgba(212,160,23,0.3);
+        }
+
+        .footer-english {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            color: var(--purple-light);
+            opacity: 0.6;
+            letter-spacing: 0.2em;
+        }
+
+        .heart {
+            display: block;
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin: 1.5rem 0;
+            animation: pulse 2.2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(212,160,23,0.6);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50%       { transform: translateX(-50%) translateY(9px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.18); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── STARFIELD ── -->
+    <canvas id="starfield"></canvas>
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+        <video autoplay muted loop playsinline>
+            <source src="assets/hero1.mov" type="video/quicktime">
+            <source src="assets/hero1.mov" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="telugu-label">అమ్మా నాన్నా - మీకు అభినందనలు</p>
+            <h1 class="names">
+                Nooka Raju
+                <span class="ampersand">&amp;</span>
+                Satyavathi
+            </h1>
+            <div class="divider"></div>
+            <p class="years-badge">27 Years of Love</p>
+            <p class="date-text">July 1, 1999 &nbsp;·&nbsp; July 1, 2026</p>
+        </div>
+        <div class="scroll-hint">
+            <span>scroll</span>
+            <div class="arrow"></div>
+        </div>
+    </section>
+
+    <!-- ── POETRY ── -->
+    <section class="poetry-section fade-in">
+        <p class="poetry-title">A Story Written in the Stars</p>
+        <p class="poetry-subtitle">నక్షత్రాలలో రాయబడిన ప్రేమ కథ</p>
+        <div class="divider-purple"></div>
+        <div class="poem">
+            <div class="stanza">
+                Some love stories are not written by hands.<br>
+                They are woven into constellations,<br>
+                whispered between galaxies,<br>
+                sealed in the quiet light of a July sky.
+            </div>
+            <div class="stanza">
+                Before you found each other,<br>
+                the stars already knew your names.<br>
+                They had been waiting,<br>
+                patient as the universe itself,<br>
+                for the night two souls<br>
+                finally recognised what they were to each other.
+            </div>
+            <div class="stanza">
+                Twenty-seven years of mornings.<br>
+                Twenty-seven years of home.<br>
+                And still, when you hold hands,<br>
+                the cosmos holds its breath.
+            </div>
+            <div class="stanza">
+                This is your story.<br>
+                It was always written in the stars.
+            </div>
+        </div>
+    </section>
+
+    <!-- ── COUNTER ── -->
+    <section class="counter-section fade-in">
+        <p class="section-telugu">మీ ప్రయాణం</p>
+        <h2 class="section-title">Together Through Every Season</h2>
+        <div class="counter-grid">
+            <div class="counter-item">
+                <span class="counter-number" id="c-years">27</span>
+                <span class="counter-label">Years</span>
+            </div>
+            <div class="counter-item">
+                <span class="counter-number" id="c-months">0</span>
+                <span class="counter-label">Months</span>
+            </div>
+            <div class="counter-item">
+                <span class="counter-number" id="c-days">0</span>
+                <span class="counter-label">Days</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── MESSAGE ── -->
+    <section class="message-section fade-in">
+        <span class="ornament">✦ &nbsp; ✦ &nbsp; ✦</span>
+        <p class="section-telugu">మా మనసు మాట</p>
+        <h2 class="section-title" style="margin-bottom:2.5rem;">A Letter From Your Sons</h2>
+
+        <p class="message-body">
+            అమ్మా, నాన్నా -<br><br>
+            Twenty-seven years ago, you made a promise to each other.
+            And every single day since then, you have kept it -
+            through everything life threw your way,
+            through distance, through hardship, through joy.
+            You kept it quietly, without drama,
+            the way only truly strong people do.<br><br>
+            Growing up watching you both,
+            we didn't always have the words for what we felt.
+            But we knew. We knew what love looked like
+            because we saw it at home every single day.<br><br>
+            We may be far, Amma. But you are never far from our hearts.
+            Today is your day - we hope it makes you smile,
+            and maybe cry a little, in the best way.
+        </p>
+
+        <p class="message-telugu">
+            మీరు ఇద్దరూ మాకు అన్నీ -<br>
+            మా బలం, మా వేర్లు, మా ప్రేమ. ❤️<br><br>
+            Happy Anniversary, అమ్మా నాన్నా.
+        </p>
+
+        <div class="divider-purple" style="margin-top:3.5rem;"></div>
+        <div class="signature">
+            <p>With all our love,</p>
+            <p class="sig-names">Rohan &amp; Srikar</p>
+        </div>
+    </section>
+
+    <!-- ── SEA VIDEO ── -->
+    <section class="sea-section fade-in">
+        <div class="gallery-header">
+            <p class="section-telugu">మీ అందమైన క్షణం</p>
+            <h2 class="section-title">A Moment by the Sea</h2>
+        </div>
+        <div class="sea-video-wrap">
+            <video controls playsinline>
+                <source src="assets/hero-video.mov" type="video/quicktime">
+                <source src="assets/hero-video.mov" type="video/mp4">
+            </video>
+        </div>
+    </section>
+
+    <!-- ── GALLERY ── -->
+    <section class="gallery-section fade-in">
+        <div class="gallery-header">
+            <p class="section-telugu">మన జ్ఞాపకాలు</p>
+            <h2 class="section-title">Moments Together</h2>
+        </div>
+        <div class="photo-grid">
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-23.jpg" alt=""></div>
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-24%202.jpg" alt=""></div>
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-24%203.jpg" alt=""></div>
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-24.jpg" alt=""></div>
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-25.jpg" alt=""></div>
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-26.jpg" alt=""></div>
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-27%202.jpg" alt=""></div>
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-27.jpg" alt=""></div>
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-28.jpg" alt=""></div>
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-30.jpg" alt=""></div>
+            <div class="photo-item"><img src="assets/photos/PHOTO-2026-06-29-06-52-32.jpg" alt=""></div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer class="fade-in">
+        <p class="footer-telugu">నూకా రాజు &amp; సత్యవతి</p>
+        <span class="heart">♥</span>
+        <p class="footer-english">27 Years &nbsp;·&nbsp; July 1, 1999</p>
+    </footer>
+
+    <script>
+        /* ── MILKY WAY STARFIELD ── */
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        let W, H;
+
+        function resize() {
+            W = canvas.width  = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+            buildNebula();
+        }
+
+        /* Static twinkling stars */
+        const STAR_COUNT = 280;
+        const stars = [];
+
+        function buildStars() {
+            stars.length = 0;
+            for (let i = 0; i < STAR_COUNT; i++) {
+                const bright = Math.random() < 0.06; // occasional bright star
+                stars.push({
+                    x:     Math.random() * W,
+                    y:     Math.random() * H,
+                    r:     bright ? (Math.random() * 1.4 + 1.0) : (Math.random() * 0.9 + 0.15),
+                    base:  Math.random() * 0.65 + (bright ? 0.5 : 0.2),
+                    phase: Math.random() * Math.PI * 2,
+                    speed: Math.random() * 0.008 + 0.002,
+                    bright,
+                    /* slight purple tint on ~20% of stars */
+                    purple: Math.random() < 0.2,
+                });
+            }
+        }
+
+        /* Drifting stardust particles */
+        const DUST_COUNT = 110;
+        const dust = [];
+
+        function newDust(randomLife) {
+            const p = {
+                x:       Math.random() * W,
+                y:       Math.random() * H,
+                vx:      (Math.random() - 0.5) * 0.22,
+                vy:      (Math.random() - 0.5) * 0.22,
+                r:       Math.random() * 1.6 + 0.4,
+                maxLife: Math.random() * 420 + 240,
+                purple:  Math.random() < 0.55,
+            };
+            p.life = randomLife ? Math.random() * p.maxLife : 0;
+            return p;
+        }
+
+        for (let i = 0; i < DUST_COUNT; i++) dust.push(newDust(true));
+
+        /* Nebula cloud overlay (pre-rendered to offscreen canvas) */
+        let nebulaCache = null;
+
+        function buildNebula() {
+            const nc = document.createElement('canvas');
+            nc.width = W; nc.height = H;
+            const nx = nc.getContext('2d');
+
+            const clouds = [
+                { cx: 0.15, cy: 0.25, rr: 0.38, r: 100, g: 30,  b: 160, a: 0.13 },
+                { cx: 0.78, cy: 0.42, rr: 0.30, r: 60,  g: 20,  b: 120, a: 0.10 },
+                { cx: 0.50, cy: 0.68, rr: 0.32, r: 90,  g: 45,  b: 155, a: 0.09 },
+                { cx: 0.88, cy: 0.14, rr: 0.22, r: 120, g: 50,  b: 190, a: 0.08 },
+                { cx: 0.30, cy: 0.82, rr: 0.25, r: 55,  g: 22,  b: 110, a: 0.07 },
+                { cx: 0.62, cy: 0.18, rr: 0.20, r: 80,  g: 30,  b: 140, a: 0.06 },
+            ];
+
+            for (const c of clouds) {
+                const rad = c.rr * Math.max(W, H);
+                const g = nx.createRadialGradient(c.cx*W, c.cy*H, 0, c.cx*W, c.cy*H, rad);
+                g.addColorStop(0, `rgba(${c.r},${c.g},${c.b},${c.a})`);
+                g.addColorStop(1, 'rgba(0,0,0,0)');
+                nx.fillStyle = g;
+                nx.fillRect(0, 0, W, H);
+            }
+
+            nebulaCache = nc;
+            buildStars(); // rebuild star positions on resize too
+        }
+
+        let frame = 0;
+
+        function animate() {
+            ctx.clearRect(0, 0, W, H);
+
+            /* nebula */
+            if (nebulaCache) ctx.drawImage(nebulaCache, 0, 0);
+
+            /* twinkling stars */
+            for (const s of stars) {
+                const op = s.base * (0.5 + 0.5 * Math.sin(s.phase + frame * s.speed));
+                if (s.purple) {
+                    ctx.fillStyle = `rgba(190,160,255,${op})`;
+                } else {
+                    ctx.fillStyle = `rgba(240,240,255,${op})`;
+                }
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fill();
+
+                /* glow on bright stars */
+                if (s.bright) {
+                    const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 5);
+                    glow.addColorStop(0, `rgba(220,210,255,${op * 0.25})`);
+                    glow.addColorStop(1, 'rgba(0,0,0,0)');
+                    ctx.fillStyle = glow;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r * 5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            /* stardust particles */
+            for (const p of dust) {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life++;
+
+                if (p.life > p.maxLife || p.x < -4 || p.x > W+4 || p.y < -4 || p.y > H+4) {
+                    Object.assign(p, newDust(false));
+                    continue;
+                }
+
+                const lr  = p.life / p.maxLife;
+                const op  = 0.65 * Math.sin(lr * Math.PI);
+                ctx.fillStyle = p.purple
+                    ? `rgba(180,120,255,${op})`
+                    : `rgba(230,225,255,${op})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            frame++;
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        animate();
+
+        /* ── LIVE COUNTER ── */
+        function updateCounter() {
+            const wedding = new Date('1999-07-01');
+            const now = new Date();
+
+            let years  = now.getFullYear() - wedding.getFullYear();
+            let months = now.getMonth()    - wedding.getMonth();
+            let days   = now.getDate()     - wedding.getDate();
+
+            if (days < 0)   { months--; days   += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+            if (months < 0) { years--;  months += 12; }
+
+            document.getElementById('c-years').textContent  = years;
+            document.getElementById('c-months').textContent = months;
+            document.getElementById('c-days').textContent   = days;
+        }
+
+        updateCounter();
+
+        /* ── SCROLL FADE-IN ── */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
