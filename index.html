@@ -51,6 +51,8 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            /* fallback when video doesn't load (Android / slow connection) */
+            background: radial-gradient(ellipse at 50% 55%, #1a0838 0%, #03010f 70%);
         }
 
         .hero video {
@@ -339,7 +341,7 @@
 
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 1.2rem;
             max-width: 1100px;
             margin: 0 auto;
@@ -434,6 +436,76 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* ── TOUCH — disable hover effects on touch screens ── */
+        @media (hover: none) {
+            .photo-item img { transition: none; }
+            .photo-item:hover img { transform: none; }
+            .photo-item:active img { transform: scale(1.03); }
+            .photo-item:hover::after { border-color: transparent; box-shadow: none; }
+        }
+
+        /* ── TABLET (≤ 768px) ── */
+        @media (max-width: 768px) {
+            .poetry-section  { padding: 5rem 1.5rem; }
+            .counter-section { padding: 3.5rem 1.5rem; }
+            .message-section { padding: 5rem 1.5rem; }
+            .sea-section     { padding: 3.5rem 1rem; }
+            .gallery-section { padding: 3.5rem 1rem 4rem; }
+            footer           { padding: 3.5rem 1.5rem; }
+
+            /* two-column photo grid on tablets */
+            .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+
+            /* skip backdrop-filter on tablet — saves GPU memory */
+            .counter-section,
+            .sea-section,
+            .gallery-section {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+        }
+
+        /* ── MOBILE (≤ 480px) ── */
+        @media (max-width: 480px) {
+            /* Hero */
+            .hero-content   { padding: 1rem 1.2rem; }
+            .telugu-label   { font-size: 0.88rem; margin-bottom: 0.8rem; }
+            .names          { font-size: 2.1rem; line-height: 1.15; }
+            .years-badge    { font-size: 0.9rem; letter-spacing: 0.15em; }
+            .date-text      { font-size: 0.72rem; letter-spacing: 0.1em; }
+            .divider        { margin: 1.4rem auto; }
+
+            /* Poetry */
+            .poetry-section  { padding: 4rem 1.2rem; }
+            .poetry-title    { letter-spacing: 0.1em; }
+            .poem            { font-size: 0.97rem; line-height: 1.85; }
+            .poem .stanza    { margin-bottom: 1.5rem; }
+
+            /* Counter */
+            .counter-section { padding: 3rem 1.2rem; }
+            .counter-grid    { gap: 1.5rem; }
+            .counter-number  { font-size: 2.8rem; }
+            .counter-label   { font-size: 0.68rem; letter-spacing: 0.15em; }
+
+            /* Message */
+            .message-section { padding: 4rem 1.2rem; }
+            .message-body    { font-size: 1rem; line-height: 1.9; }
+            .message-telugu  { font-size: 0.93rem; }
+            .sig-names       { font-size: 1.2rem; }
+            .ornament        { letter-spacing: 0.25em; margin-bottom: 1.8rem; }
+
+            /* Sea video */
+            .sea-section { padding: 3rem 0.8rem; }
+
+            /* Gallery */
+            .gallery-section { padding: 3rem 0.8rem 3.5rem; }
+            .photo-grid      { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+
+            /* Footer */
+            footer         { padding: 3rem 1.2rem; }
+            .footer-telugu { font-size: 1.15rem; }
+        }
     </style>
 </head>
 <body>
@@ -443,7 +515,7 @@
 
     <!-- ── HERO ── -->
     <section class="hero">
-        <video autoplay muted loop playsinline>
+        <video autoplay muted loop playsinline preload="metadata">
             <source src="assets/hero1.mov" type="video/quicktime">
             <source src="assets/hero1.mov" type="video/mp4">
         </video>
@@ -597,9 +669,18 @@
     </footer>
 
     <script>
+        /* ── HERO VIDEO FALLBACK ── */
+        /* .mov is unsupported on Android Chrome — hide the element gracefully */
+        const heroVid = document.querySelector('.hero video');
+        if (heroVid) {
+            heroVid.addEventListener('error', () => { heroVid.style.display = 'none'; }, true);
+        }
+
         /* ── MILKY WAY STARFIELD ── */
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
+
+        const isMobile = window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent);
 
         let W, H;
 
@@ -610,7 +691,7 @@
         }
 
         /* Static twinkling stars */
-        const STAR_COUNT = 280;
+        const STAR_COUNT = isMobile ? 130 : 280;
         const stars = [];
 
         function buildStars() {
@@ -632,7 +713,7 @@
         }
 
         /* Drifting stardust particles */
-        const DUST_COUNT = 110;
+        const DUST_COUNT = isMobile ? 45 : 110;
         const dust = [];
 
         function newDust(randomLife) {
@@ -701,8 +782,8 @@
                 ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
                 ctx.fill();
 
-                /* glow on bright stars */
-                if (s.bright) {
+                /* glow on bright stars — skip on mobile for performance */
+                if (s.bright && !isMobile) {
                     const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 5);
                     glow.addColorStop(0, `rgba(220,210,255,${op * 0.25})`);
                     glow.addColorStop(1, 'rgba(0,0,0,0)');
